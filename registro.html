@@ -44,21 +44,19 @@
                 <button type="button" onclick="guardar()">Guardar</button>
             </form>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Marca</th>
-                            <th>Especificaciones</th>
-                            <th>Fecha y Año de Fabricación</th>
-                            <th>Detalles</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-body"></tbody>
-                </table>
-            </div>
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Marca</th>
+                        <th>Especificaciones</th>
+                        <th>Fecha y Año de Fabricación</th>
+                        <th>Detalles</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-body"></tbody>
+            </table>
         </div>
 
         <div class="img-formulario">
@@ -71,15 +69,25 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-        // Tu configuración de Firebase aquí...
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAYYHfHIO3GjsNFLJ1DoNzqjWAr21ZoEVg",
+            authDomain: "proyecto-falcon25.firebaseapp.com",
+            databaseURL: "https://proyecto-falcon25-default-rtdb.firebaseio.com",
+            projectId: "proyecto-falcon25",
+            storageBucket: "proyecto-falcon25.appspot.com",
+            messagingSenderId: "897557394941",
+            appId: "1:897557394941:web:a995638cdfb6b7e1735594"
+        };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
         const listaRegistro = document.getElementById("registrar");
 
         function actualizarLista() {
-            listaRegistro.innerHTML = "";
+            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
 
             const controladoresRef = ref(database, 'controladoresDJ');
 
@@ -131,7 +139,7 @@
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
 
-            actualizarLista();
+            actualizarLista(); // Actualizar la lista después de guardar
         }
 
         window.editar = function (key, controlador) {
@@ -149,14 +157,14 @@
                 detalles: nuevosDetalles
             });
 
-            actualizarLista();
+            actualizarLista(); // Actualizar la lista después de editar
         }
 
         window.eliminar = function (key) {
             const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'controladoresDJ'), key));
-                actualizarLista();
+                actualizarLista(); // Actualizar la lista después de eliminar
             }
         };
 
