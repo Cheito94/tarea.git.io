@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheito Company</title>
+    <link rel="stylesheet" type="text/css" href="css/estiloRegistro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-…" crossorigin="anonymous" />
+</head>
+<body>
+
+<header>
+    <div class="encabezado">
+        <h1>Cheito Company</h1>
+        <p>Encuentra tu controlador preferido</p>
+        <nav class="menu">
+            <a href="index.html">Pagina Principal</a>
+            <a href="informacion.html">Información</a>
+            <a href="contactos.html">Contactos</a>
+            <a href="registro.html">Registrar Controladores</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="formulario">
+            <h2>Ingreso de datos</h2>
+            
+            <form>
+                <label for="codigo">Codigo:</label>
+                <input type="text" id="codigo" required>
+    
+                <label for="marca">Marca:</label>
+                <input type="text" id="marca" required>
+                
+                <label for="telefono">Especificaciones:</label>
+                <input type="tel" id="especificaciones" required>
+                
+                <label for="fecha_fabrica">Fecha y Año de Fabricación:</label>
+                <input type="date" id="fecha_fabrica" required>
+
+                <label for="detalles">Detalles:</label>
+                <input type="detalles" id="detalles" required>
+    
+                <button type="button" onclick="guardar()">Guardar</button>
+            </form>
+        </div>
+    
+        <div class="img-formulario">
+            <img src="img/escucha.png" alt="Descripción de la imagen" style="width: 400px; height: 400px; align-items: left;">
+        </div>
+    </div>
+
+    <ul id="registrar"></ul>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
+          authDomain: "conexion-8ec0d.firebaseapp.com",
+          databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
+          projectId: "conexion-8ec0d",
+          storageBucket: "conexion-8ec0d.appspot.com",
+          messagingSenderId: "679910299749",
+          appId: "1:679910299749:web:9800b464879628b4850e8c"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.guardar = function () {
+            const codigo = document.getElementById("codigo").value;
+            const marca = document.getElementById("marca").value;
+            const especificaciones = document.getElementById("especificaciones").value;
+            const fecha_fabrica = document.getElementById("fecha_fabrica").value;
+            const detalles = document.getElementById("detalles").value;
+            console.log(codigo, marca, especificaciones,fecha_fabrica, detalles);
+            
+            push(
+                ref(database, 'controladoresDJ'),
+                {
+                    codigo: codigo,
+                    marca: marca,
+                    especificaciones: especificaciones,
+                    fecha_fabrica: fecha_fabrica,
+                    detalles: detalles
+                }
+            );
+
+            document.getElementById('codigo').value = '';
+            document.getElementById('marca').value = '';
+            document.getElementById('especificaciones').value = '';
+            document.getElementById('fecha_fabrica').value = '';
+            document.getElementById('detalles').value = '';
+
+        }
+      </script>
+
+
+</body>
+</html>
