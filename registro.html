@@ -42,7 +42,6 @@
                 <input type="detalles" id="detalles" required>
 
                 <button type="button" onclick="guardar()">Guardar</button>
-                
             </form>
         </div>
 
@@ -51,56 +50,38 @@
         </div>
     </div>
 
-    <ul id="registrar"></ul>
+    <table id="tabla-controladores">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Marca</th>
+                <th>Especificaciones</th>
+                <th>Fecha y Año de Fabricación</th>
+                <th>Detalles</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo-tabla">
+            <!-- Aquí se llenarán los datos dinámicamente -->
+        </tbody>
+    </table>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
-        // Your web app's Firebase configuration
         const firebaseConfig = {
-        apiKey: "AIzaSyBvEPUyI1HffkQBfBUAtw8_sLnoK_HyU24",
-        authDomain: "my-project-8aef9.firebaseapp.com",
-        databaseURL: "https://my-project-8aef9-default-rtdb.firebaseio.com",
-        projectId: "my-project-8aef9",
-        storageBucket: "my-project-8aef9.appspot.com",
-        messagingSenderId: "202472136261",
-        appId: "1:202472136261:web:08ebcdb1c54edfb23c0d2c"
+          apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
+          authDomain: "conexion-8ec0d.firebaseapp.com",
+          databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
+          projectId: "conexion-8ec0d",
+          storageBucket: "conexion-8ec0d.appspot.com",
+          messagingSenderId: "679910299749",
+          appId: "1:679910299749:web:9800b464879628b4850e8c"
         };
-
-        // Initialize Firebase
+      
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-
-        const listaRegistro = document.getElementById("registrar");
-
-        function actualizarLista() {
-            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
-
-            const controladoresRef = ref(database, 'controladoresDJ');
-
-            onValue(controladoresRef, (snapshot) => {
-                const datos = snapshot.val();
-
-                for (let key in datos) {
-                    const controlador = datos[key];
-
-                    const li = document.createElement("li");
-                    li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
-
-                    const editarButton = document.createElement("button");
-                    editarButton.textContent = "Editar";
-                    editarButton.onclick = () => editar(key, controlador);
-                    li.appendChild(editarButton);
-
-                    const eliminarButton = document.createElement("button");
-                    eliminarButton.textContent = "Eliminar";
-                    eliminarButton.onclick = () => eliminar(key);
-                    li.appendChild(eliminarButton);
-
-                    listaRegistro.appendChild(li);
-                }
-            });
-        }
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
@@ -120,13 +101,30 @@
                 }
             );
 
+            // Limpiar los campos después de guardar
             document.getElementById('codigo').value = '';
             document.getElementById('marca').value = '';
             document.getElementById('especificaciones').value = '';
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
 
-            actualizarLista(); // Actualizar la lista después de guardar
+            // Actualizar la tabla
+            const cuerpoTabla = document.getElementById("cuerpo-tabla");
+            const nuevaFila = cuerpoTabla.insertRow();
+            
+            const celdas = [
+                codigo,
+                marca,
+                especificaciones,
+                fecha_fabrica,
+                detalles,
+                '<button onclick="editar()">Editar</button><button onclick="eliminar()">Eliminar</button>'
+            ];
+
+            for (const valor of celdas) {
+                const nuevaCelda = nuevaFila.insertCell();
+                nuevaCelda.textContent = valor;
+            }
         }
 
         window.editar = function (key, controlador) {
@@ -154,9 +152,6 @@
                 actualizarLista(); // Actualizar la lista después de eliminar
             }
         }
-
-        // Actualizar la lista al cargar la página
-        actualizarLista();
     </script>
 </body>
 </html>
