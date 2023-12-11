@@ -28,23 +28,25 @@
             <form>
                 <label for="codigo">Codigo:</label>
                 <input type="text" id="codigo" required>
-    
+
                 <label for="marca">Marca:</label>
                 <input type="text" id="marca" required>
-                
+
                 <label for="telefono">Especificaciones:</label>
                 <input type="tel" id="especificaciones" required>
-                
+
                 <label for="fecha_fabrica">Fecha y Año de Fabricación:</label>
                 <input type="date" id="fecha_fabrica" required>
 
                 <label for="detalles">Detalles:</label>
                 <input type="detalles" id="detalles" required>
-    
+
                 <button type="button" onclick="guardar()">Guardar</button>
+                <button type="button" onclick="editar()">Editar</button>
+                <button type="button" onclick="eliminar()">Eliminar</button>
             </form>
         </div>
-    
+
         <div class="img-formulario">
             <img src="img/escucha.png" alt="Descripción de la imagen" style="width: 400px; height: 400px; align-items: left;">
         </div>
@@ -52,24 +54,19 @@
 
     <ul id="registrar"></ul>
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
+        import { getDatabase, ref, push, onValue, remove, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
-        // Your web app's Firebase configuration
         const firebaseConfig = {
-        apiKey: "AIzaSyBvEPUyI1HffkQBfBUAtw8_sLnoK_HyU24",
-        authDomain: "my-project-8aef9.firebaseapp.com",
-        databaseURL: "https://my-project-8aef9-default-rtdb.firebaseio.com",
-        projectId: "my-project-8aef9",
-        storageBucket: "my-project-8aef9.appspot.com",
-        messagingSenderId: "202472136261",
-        appId: "1:202472136261:web:08ebcdb1c54edfb23c0d2c"
+          apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
+          authDomain: "conexion-8ec0d.firebaseapp.com",
+          databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
+          projectId: "conexion-8ec0d",
+          storageBucket: "conexion-8ec0d.appspot.com",
+          messagingSenderId: "679910299749",
+          appId: "1:679910299749:web:9800b464879628b4850e8c"
         };
-
-        // Initialize Firebase
+      
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
@@ -79,7 +76,6 @@
             const especificaciones = document.getElementById("especificaciones").value;
             const fecha_fabrica = document.getElementById("fecha_fabrica").value;
             const detalles = document.getElementById("detalles").value;
-            console.log(codigo, marca, especificaciones,fecha_fabrica, detalles);
             
             push(
                 ref(database, 'controladoresDJ'),
@@ -97,10 +93,26 @@
             document.getElementById('especificaciones').value = '';
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
-
         }
-      </script>
 
+        window.editar = function () {
+            const controladoresRef = ref(database, 'controladoresDJ');
+            const query = push(controladoresRef);
+            const ultimoID = query.key;
 
+            console.log("Editar el elemento con ID:", ultimoID);
+            // Aquí puedes implementar la lógica de edición
+        }
+
+        window.eliminar = function () {
+            const controladoresRef = ref(database, 'controladoresDJ');
+            const query = push(controladoresRef);
+            const ultimoID = query.key;
+
+            console.log("Eliminar el elemento con ID:", ultimoID);
+            remove(child(controladoresRef, ultimoID));
+            // Aquí puedes implementar la lógica de eliminación
+        }
+    </script>
 </body>
 </html>
