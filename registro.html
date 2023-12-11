@@ -55,7 +55,7 @@
     <ul id="registrar"></ul>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
         const firebaseConfig = {
           apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
@@ -69,6 +69,37 @@
       
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+
+        const listaRegistro = document.getElementById("registrar");
+
+        function actualizarLista() {
+            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
+
+            const controladoresRef = ref(database, 'controladoresDJ');
+
+            onValue(controladoresRef, (snapshot) => {
+                const datos = snapshot.val();
+
+                for (let key in datos) {
+                    const controlador = datos[key];
+
+                    const li = document.createElement("li");
+                    li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
+
+                    const editarButton = document.createElement("button");
+                    editarButton.textContent = "Editar";
+                    editarButton.onclick = () => editar(key, controlador);
+                    li.appendChild(editarButton);
+
+                    const eliminarButton = document.createElement("button");
+                    eliminarButton.textContent = "Eliminar";
+                    eliminarButton.onclick = () => eliminar(key);
+                    li.appendChild(eliminarButton);
+
+                    listaRegistro.appendChild(li);
+                }
+            });
+        }
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
@@ -93,26 +124,38 @@
             document.getElementById('especificaciones').value = '';
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
+
+            actualizarLista(); // Actualizar la lista después de guardar
         }
 
-        window.editar = function () {
-            const controladoresRef = ref(database, 'controladoresDJ');
-            const query = push(controladoresRef);
-            const ultimoID = query.key;
+        window.editar = function (key, controlador) {
+            const nuevoCodigo = prompt("Nuevo Código:", controlador.codigo);
+            const nuevaMarca = prompt("Nueva Marca:", controlador.marca);
+            const nuevasEspecificaciones = prompt("Nuevas Especificaciones:", controlador.especificaciones);
+            const nuevaFechaFabrica = prompt("Nueva Fecha de Fabricación:", controlador.fecha_fabrica);
+            const nuevosDetalles = prompt("Nuevos Detalles:", controlador.detalles);
 
-            console.log("Editar el elemento con ID:", ultimoID);
-            // Aquí puedes implementar la lógica de edición
+            update(child(ref(database, 'controladoresDJ'), key), {
+                codigo: nuevoCodigo,
+                marca: nuevaMarca,
+                especificaciones: nuevasEspecificaciones,
+                fecha_fabrica: nuevaFechaFabrica,
+                detalles: nuevosDetalles
+            });
+
+            actualizarLista(); // Actualizar la lista después de editar
         }
 
-        window.eliminar = function () {
-            const controladoresRef = ref(database, 'controladoresDJ');
-            const query = push(controladoresRef);
-            const ultimoID = query.key;
-
-            console.log("Eliminar el elemento con ID:", ultimoID);
-            remove(child(controladoresRef, ultimoID));
-            // Aquí puedes implementar la lógica de eliminación
+        window.eliminar = function (key) {
+            const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
+            if (confirmacion) {
+                remove(child(ref(database, 'controladoresDJ'), key));
+                actualizarLista(); // Actualizar la lista después de eliminar
+            }
         }
+
+        // Actualizar la lista al cargar la página
+        actualizarLista();
     </script>
 </body>
 </html>
