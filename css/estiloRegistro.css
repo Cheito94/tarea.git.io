@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
     background-size: cover;
-    background-image: url("img/trama.jpg");
 }
 
 .encabezado {
@@ -19,6 +18,23 @@ body {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.table-container {
+    width: 60%; /* Ajusta según sea necesario */
+    margin-bottom: 20px; /* Agrega espacio entre la tabla y el contenido debajo */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Ajusta según sea necesario */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
 }
 
 .formulario {
