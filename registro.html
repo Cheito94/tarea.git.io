@@ -51,16 +51,14 @@
     </div>
 
     <table id="tabla-controladores">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Marca</th>
-                <th>Especificaciones</th>
-                <th>Fecha y Año de Fabricación</th>
-                <th>Detalles</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <tr>
+            <th>Código</th>
+            <th>Marca</th>
+            <th>Especificaciones</th>
+            <th>Fecha y Año de Fabricación</th>
+            <th>Detalles</th>
+            <th>Acciones</th>
+        </tr>
         <tbody id="cuerpo-tabla">
             <!-- Aquí se llenarán los datos dinámicamente -->
         </tbody>
@@ -68,7 +66,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, child, update } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
         const firebaseConfig = {
           apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
@@ -82,6 +80,35 @@
       
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+
+        function actualizarLista() {
+            const cuerpoTabla = document.getElementById("cuerpo-tabla");
+            cuerpoTabla.innerHTML = ''; // Limpiar la tabla
+
+            onValue(ref(database, 'controladoresDJ'), (snapshot) => {
+                const controladores = snapshot.val();
+
+                for (const key in controladores) {
+                    const controlador = controladores[key];
+
+                    const nuevaFila = cuerpoTabla.insertRow();
+
+                    const celdas = [
+                        controlador.codigo,
+                        controlador.marca,
+                        controlador.especificaciones,
+                        controlador.fecha_fabrica,
+                        controlador.detalles,
+                        `<button onclick="editar('${key}', ${JSON.stringify(controlador)})">Editar</button><button onclick="eliminar('${key}')">Eliminar</button>`
+                    ];
+
+                    for (const valor of celdas) {
+                        const nuevaCelda = nuevaFila.insertCell();
+                        nuevaCelda.textContent = valor;
+                    }
+                }
+            });
+        }
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
@@ -109,22 +136,7 @@
             document.getElementById('detalles').value = '';
 
             // Actualizar la tabla
-            const cuerpoTabla = document.getElementById("cuerpo-tabla");
-            const nuevaFila = cuerpoTabla.insertRow();
-            
-            const celdas = [
-                codigo,
-                marca,
-                especificaciones,
-                fecha_fabrica,
-                detalles,
-                '<button onclick="editar()">Editar</button><button onclick="eliminar()">Eliminar</button>'
-            ];
-
-            for (const valor of celdas) {
-                const nuevaCelda = nuevaFila.insertCell();
-                nuevaCelda.textContent = valor;
-            }
+            actualizarLista();
         }
 
         window.editar = function (key, controlador) {
@@ -152,6 +164,9 @@
                 actualizarLista(); // Actualizar la lista después de eliminar
             }
         }
+
+        // Llenar la tabla al cargar la página
+        actualizarLista();
     </script>
 </body>
 </html>
