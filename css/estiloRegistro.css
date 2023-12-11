@@ -16,19 +16,19 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
 }
 
 .table-container {
-    width: 60%; /* Ajusta según sea necesario */
-    margin-bottom: 20px; /* Agrega espacio entre la tabla y el contenido debajo */
+    width: 100%; 
+    margin-bottom: 20px; 
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px; /* Ajusta según sea necesario */
+    margin-top: 10px; 
 }
 
 th, td {
