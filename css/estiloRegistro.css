@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     background-size: cover;
+    background-image: url('https://img.freepik.com/vector-gratis/elegante-fondo-blanco-lineas-brillantes_1017-17580.jpg?w=740&t=st=1702307281~exp=1702307881~hmac=dd194cefa1d69106d5eb8b2f0ea99d53b305ced5aee829bb27d2e652f9cd3fc8');
 }
 
 .encabezado {
@@ -16,7 +17,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1500px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -31,13 +32,24 @@ body {
     height: 400px;
 }
 
-.formulario {
-    max-width: 250px;
-    height: 400px;
-    margin: 0 auto 20px;
-    padding: 0 20px;
-    background-color: #3276B3;
-    border-radius: 4px;
+.imagenes-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.imagenes-container > div {
+    text-align: center;
+    width: 30%; 
+    margin-bottom: 20px;
+}
+
+.imagenes-container img {
+    width: 100%; 
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 input {
@@ -64,28 +76,6 @@ button:hover {
     background-color: #003461; 
 }
 
-#datos-ingresados {
-    margin-top: 20px;
-    width: 80%; /* Ajusta el ancho según tus preferencias */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-th, td {
-    border: 2px solid #000000;
-    text-align: center;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
 header, footer {
     background-color: #3276B3;
     color: white;
@@ -94,3 +84,14 @@ header, footer {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.footer__social {
+    display: flex;
+    justify-content: center;
+}
+
+.socialNav__item {
+    margin-right: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
