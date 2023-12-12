@@ -159,7 +159,7 @@
         window.eliminar = function (key) {
             const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
-                remove(child(ref(database, 'controladoresDJ'), key));
+                remove(child(ref(database, 'Falcon'), key));
                 actualizarLista(); 
             }
         }
