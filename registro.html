@@ -42,7 +42,6 @@
                 <input type="text" id="detalles" required>
 
                 <button type="button" onclick="guardar()">Guardar</button>
-                
             </form>
         </div>
 
@@ -53,7 +52,7 @@
 
     <div id="datos-ingresados">
         <h2>Datos Ingresados</h2>
-        <table id="tabla-registros">
+        <table border="1">
             <thead>
                 <tr>
                     <th>Código</th>
@@ -72,7 +71,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
-        // Configuración de Firebase
+        // Your web app's Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyAYYHfHIO3GjsNFLJ1DoNzqjWAr21ZoEVg",
           authDomain: "proyecto-falcon25.firebaseapp.com",
@@ -83,14 +82,15 @@
           appId: "1:897557394941:web:a995638cdfb6b7e1735594"
         };
       
-        // Inicializar Firebase
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        const tablaRegistros = document.getElementById("tabla-registros");
+        function actualizarLista() {
+            const tablaBody = document.getElementById('registrar');
+            tablaBody.innerHTML = ""; // Limpiar la tabla antes de actualizar
 
-        function actualizarTabla() {
-            tablaRegistros.innerHTML = ""; // Limpiar la tabla antes de actualizar
+            const datosIngresados = document.getElementById("datos-ingresados");
 
             const controladoresRef = ref(database, 'Falcon');
 
@@ -100,30 +100,20 @@
                 for (let key in datos) {
                     const controlador = datos[key];
 
-                    const fila = tablaRegistros.insertRow();
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${controlador.codigo}</td>
+                        <td>${controlador.marca}</td>
+                        <td>${controlador.especificaciones}</td>
+                        <td>${controlador.fecha_fabrica}</td>
+                        <td>${controlador.detalles}</td>
+                        <td>
+                            <button onclick="editar('${key}', '${controlador.codigo}', '${controlador.marca}', '${controlador.especificaciones}', '${controlador.fecha_fabrica}', '${controlador.detalles}')">Editar</button>
+                            <button onclick="eliminar('${key}')">Eliminar</button>
+                        </td>
+                    `;
 
-                    const cellCodigo = fila.insertCell(0);
-                    const cellMarca = fila.insertCell(1);
-                    const cellEspecificaciones = fila.insertCell(2);
-                    const cellFechaFabricacion = fila.insertCell(3);
-                    const cellDetalles = fila.insertCell(4);
-                    const cellAcciones = fila.insertCell(5);
-
-                    cellCodigo.textContent = controlador.codigo;
-                    cellMarca.textContent = controlador.marca;
-                    cellEspecificaciones.textContent = controlador.especificaciones;
-                    cellFechaFabricacion.textContent = controlador.fecha_fabrica;
-                    cellDetalles.textContent = controlador.detalles;
-
-                    const editarButton = document.createElement("button");
-                    editarButton.textContent = "Editar";
-                    editarButton.onclick = () => editar(key, controlador);
-                    cellAcciones.appendChild(editarButton);
-
-                    const eliminarButton = document.createElement("button");
-                    eliminarButton.textContent = "Eliminar";
-                    eliminarButton.onclick = () => eliminar(key);
-                    cellAcciones.appendChild(eliminarButton);
+                    tablaBody.appendChild(fila);
                 }
             });
         }
@@ -152,15 +142,15 @@
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
 
-            actualizarTabla();
+            actualizarLista();
         }
 
-        window.editar = function (key, controlador) {
-            const nuevoCodigo = prompt("Nuevo Código:", controlador.codigo);
-            const nuevaMarca = prompt("Nueva Marca:", controlador.marca);
-            const nuevasEspecificaciones = prompt("Nuevas Especificaciones:", controlador.especificaciones);
-            const nuevaFechaFabrica = prompt("Nueva Fecha de Fabricación:", controlador.fecha_fabrica);
-            const nuevosDetalles = prompt("Nuevos Detalles:", controlador.detalles);
+        window.editar = function (key, codigo, marca, especificaciones, fecha_fabrica, detalles) {
+            const nuevoCodigo = prompt("Nuevo Código:", codigo);
+            const nuevaMarca = prompt("Nueva Marca:", marca);
+            const nuevasEspecificaciones = prompt("Nuevas Especificaciones:", especificaciones);
+            const nuevaFechaFabrica = prompt("Nueva Fecha de Fabricación:", fecha_fabrica);
+            const nuevosDetalles = prompt("Nuevos Detalles:", detalles);
 
             update(child(ref(database, 'Falcon'), key), {
                 codigo: nuevoCodigo,
@@ -170,18 +160,18 @@
                 detalles: nuevosDetalles
             });
 
-            actualizarTabla();
+            actualizarLista();
         }
 
         window.eliminar = function (key) {
             const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'Falcon'), key));
-                actualizarTabla(); 
+                actualizarLista(); 
             }
         }
 
-        actualizarTabla();
+        actualizarLista();
     </script>
 </body>
 </html>
