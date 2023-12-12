@@ -64,6 +64,26 @@ button:hover {
     background-color: #003461; 
 }
 
+#datos-ingresados {
+    margin-top: 20px;
+    width: 80%; /* Ajusta el ancho según tus preferencias */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
 header, footer {
     background-color: #3276B3;
     color: white;
