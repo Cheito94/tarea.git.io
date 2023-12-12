@@ -53,7 +53,19 @@
 
     <div id="datos-ingresados">
         <h2>Datos Ingresados</h2>
-        <ul id="registrar"></ul>
+        <table id="tabla-registros">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Marca</th>
+                    <th>Especificaciones</th>
+                    <th>Fecha de Fabricación</th>
+                    <th>Detalles</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="registrar"></tbody>
+        </table>
     </div>
 
     <script type="module">
@@ -75,12 +87,10 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        const listaRegistro = document.getElementById("registrar");
+        const tablaRegistros = document.getElementById("tabla-registros");
 
-        function actualizarLista() {
-            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
-
-            const datosIngresados = document.getElementById("datos-ingresados");
+        function actualizarTabla() {
+            tablaRegistros.innerHTML = ""; // Limpiar la tabla antes de actualizar
 
             const controladoresRef = ref(database, 'Falcon');
 
@@ -90,24 +100,31 @@
                 for (let key in datos) {
                     const controlador = datos[key];
 
-                    const li = document.createElement("li");
-                    li.textContent = `Código: ${controlador.codigo} | Marca: ${controlador.marca} | Especificaciones: ${controlador.especificaciones} | Fecha de Fabricación: ${controlador.fecha_fabrica} | Detalles: ${controlador.detalles}`;
+                    const fila = tablaRegistros.insertRow();
+
+                    const cellCodigo = fila.insertCell(0);
+                    const cellMarca = fila.insertCell(1);
+                    const cellEspecificaciones = fila.insertCell(2);
+                    const cellFechaFabricacion = fila.insertCell(3);
+                    const cellDetalles = fila.insertCell(4);
+                    const cellAcciones = fila.insertCell(5);
+
+                    cellCodigo.textContent = controlador.codigo;
+                    cellMarca.textContent = controlador.marca;
+                    cellEspecificaciones.textContent = controlador.especificaciones;
+                    cellFechaFabricacion.textContent = controlador.fecha_fabrica;
+                    cellDetalles.textContent = controlador.detalles;
 
                     const editarButton = document.createElement("button");
                     editarButton.textContent = "Editar";
                     editarButton.onclick = () => editar(key, controlador);
-                    li.appendChild(editarButton);
+                    cellAcciones.appendChild(editarButton);
 
                     const eliminarButton = document.createElement("button");
                     eliminarButton.textContent = "Eliminar";
                     eliminarButton.onclick = () => eliminar(key);
-                    li.appendChild(eliminarButton);
-
-                    listaRegistro.appendChild(li);
+                    cellAcciones.appendChild(eliminarButton);
                 }
-
-                datosIngresados.innerHTML = `<h2>Datos Ingresados</h2>`;
-                datosIngresados.appendChild(listaRegistro);
             });
         }
 
@@ -135,7 +152,7 @@
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
 
-            actualizarLista();
+            actualizarTabla();
         }
 
         window.editar = function (key, controlador) {
@@ -153,19 +170,18 @@
                 detalles: nuevosDetalles
             });
 
-            actualizarLista();
+            actualizarTabla();
         }
 
         window.eliminar = function (key) {
-            const confirmacion = confirm("¿Desea eliminar este registro?");
+            const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'Falcon'), key));
-                listaRegistro.innerHTML = ""; // Limpiar la lista después de eliminar
-                actualizarLista();
+                actualizarTabla(); 
             }
         }
 
-        actualizarLista();
+        actualizarTabla();
     </script>
 </body>
 </html>
