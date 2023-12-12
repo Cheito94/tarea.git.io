@@ -51,7 +51,11 @@
         </div>
     </div>
 
-    <ul id="registrar"></ul>
+    <div id="datos-ingresados">
+        <h2>Datos Ingresados</h2>
+        <ul id="registrar"></ul>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
@@ -74,33 +78,38 @@
         const listaRegistro = document.getElementById("registrar");
 
         function actualizarLista() {
-            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
+    const listaRegistro = document.getElementById("registrar");
+    listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
 
-            const controladoresRef = ref(database, 'controladoresDJ');
+    const datosIngresados = document.getElementById("datos-ingresados");
 
-            onValue(controladoresRef, (snapshot) => {
-                const datos = snapshot.val();
+    const controladoresRef = ref(database, 'Falcon');
 
-                for (let key in datos) {
-                    const controlador = datos[key];
+    onValue(controladoresRef, (snapshot) => {
+        const datos = snapshot.val();
 
-                    const li = document.createElement("li");
-                    li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
+        for (let key in datos) {
+            const controlador = datos[key];
 
-                    const editarButton = document.createElement("button");
-                    editarButton.textContent = "Editar";
-                    editarButton.onclick = () => editar(key, controlador);
-                    li.appendChild(editarButton);
+            const li = document.createElement("li");
+            li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
 
-                    const eliminarButton = document.createElement("button");
-                    eliminarButton.textContent = "Eliminar";
-                    eliminarButton.onclick = () => eliminar(key);
-                    li.appendChild(eliminarButton);
+            const editarButton = document.createElement("button");
+            editarButton.textContent = "Editar";
+            editarButton.onclick = () => editar(key, controlador);
+            li.appendChild(editarButton);
 
-                    listaRegistro.appendChild(li);
-                }
-            });
+            const eliminarButton = document.createElement("button");
+            eliminarButton.textContent = "Eliminar";
+            eliminarButton.onclick = () => eliminar(key);
+            li.appendChild(eliminarButton);
+
+            listaRegistro.appendChild(li);
+            datosIngresados.appendChild(li.cloneNode(true)); // Agregar el mismo elemento a la nueva ubicación
         }
+    });
+}
+
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
