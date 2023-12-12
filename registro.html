@@ -78,38 +78,40 @@
         const listaRegistro = document.getElementById("registrar");
 
         function actualizarLista() {
-    const listaRegistro = document.getElementById("registrar");
-    listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
+            const listaRegistro = document.getElementById("registrar");
+            listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
 
-    const datosIngresados = document.getElementById("datos-ingresados");
+            const datosIngresados = document.getElementById("datos-ingresados");
 
-    const controladoresRef = ref(database, 'Falcon');
+            const controladoresRef = ref(database, 'Falcon');
 
-    onValue(controladoresRef, (snapshot) => {
-        const datos = snapshot.val();
+            onValue(controladoresRef, (snapshot) => {
+                const datos = snapshot.val();
 
-        for (let key in datos) {
-            const controlador = datos[key];
+                for (let key in datos) {
+                    const controlador = datos[key];
 
-            const li = document.createElement("li");
-            li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
+                    const li = document.createElement("li");
+                    li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
 
-            const editarButton = document.createElement("button");
-            editarButton.textContent = "Editar";
-            editarButton.onclick = () => editar(key, controlador);
-            li.appendChild(editarButton);
+                    const editarButton = document.createElement("button");
+                    editarButton.textContent = "Editar";
+                    editarButton.onclick = () => editar(key, controlador);
+                    li.appendChild(editarButton);
 
-            const eliminarButton = document.createElement("button");
-            eliminarButton.textContent = "Eliminar";
-            eliminarButton.onclick = () => eliminar(key);
-            li.appendChild(eliminarButton);
+                    const eliminarButton = document.createElement("button");
+                    eliminarButton.textContent = "Eliminar";
+                    eliminarButton.onclick = () => eliminar(key);
+                    li.appendChild(eliminarButton);
 
-            listaRegistro.appendChild(li);
-            datosIngresados.appendChild(li.cloneNode(true)); // Agregar el mismo elemento a la nueva ubicación
+                    listaRegistro.appendChild(li);
+                    datosIngresados.appendChild(li.cloneNode(true)); // Agregar el mismo elemento a la nueva ubicación
+                }
+            });
         }
-    });
-}
 
+        // Llamada inicial al cargar la página
+        actualizarLista();
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
@@ -145,7 +147,7 @@
             const nuevaFechaFabrica = prompt("Nueva Fecha de Fabricación:", controlador.fecha_fabrica);
             const nuevosDetalles = prompt("Nuevos Detalles:", controlador.detalles);
 
-            update(child(ref(database, 'controladoresDJ'), key), {
+            update(child(ref(database, 'Falcon'), key), {
                 codigo: nuevoCodigo,
                 marca: nuevaMarca,
                 especificaciones: nuevasEspecificaciones,
@@ -163,8 +165,6 @@
                 actualizarLista(); 
             }
         }
-
-        actualizarLista();
     </script>
 </body>
 </html>
