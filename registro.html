@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cheito Company</title>
     <link rel="stylesheet" type="text/css" href="css/estiloRegistro.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-…" crossorigin="anonymous" />
 </head>
 <body>
 
@@ -164,7 +163,7 @@
         }
 
         window.eliminar = function (key) {
-            const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
+            const confirmacion = confirm("¿Desea eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'Falcon'), key));
                 actualizarLista(); 
