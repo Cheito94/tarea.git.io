@@ -106,7 +106,8 @@
                     listaRegistro.appendChild(li);
                 }
 
-                datosIngresados.innerHTML = listaRegistro.innerHTML; // Actualizar la sección de datos ingresados
+                datosIngresados.innerHTML = `<h2>Datos Ingresados</h2>`;
+                datosIngresados.appendChild(listaRegistro); // Agregar la lista a la sección de datos ingresados
             });
         }
 
