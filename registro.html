@@ -60,7 +60,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
       
-        // Your web app's Firebase configuration
+        // Configuración de Firebase
         const firebaseConfig = {
           apiKey: "AIzaSyAYYHfHIO3GjsNFLJ1DoNzqjWAr21ZoEVg",
           authDomain: "proyecto-falcon25.firebaseapp.com",
@@ -71,14 +71,13 @@
           appId: "1:897557394941:web:a995638cdfb6b7e1735594"
         };
       
-        // Initialize Firebase
+        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
         const listaRegistro = document.getElementById("registrar");
 
         function actualizarLista() {
-            const listaRegistro = document.getElementById("registrar");
             listaRegistro.innerHTML = ""; // Limpiar la lista antes de actualizar
 
             const datosIngresados = document.getElementById("datos-ingresados");
@@ -105,13 +104,11 @@
                     li.appendChild(eliminarButton);
 
                     listaRegistro.appendChild(li);
-                    datosIngresados.appendChild(li.cloneNode(true)); // Agregar el mismo elemento a la nueva ubicación
                 }
+
+                datosIngresados.innerHTML = listaRegistro.innerHTML; // Actualizar la sección de datos ingresados
             });
         }
-
-        // Llamada inicial al cargar la página
-        actualizarLista();
 
         window.guardar = function () {
             const codigo = document.getElementById("codigo").value;
@@ -162,9 +159,12 @@
             const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'Falcon'), key));
-                actualizarLista(); 
+                listaRegistro.innerHTML = ""; // Limpiar la lista después de eliminar
+                actualizarLista();
             }
         }
+
+        actualizarLista();
     </script>
 </body>
 </html>
