@@ -91,7 +91,7 @@
                     const controlador = datos[key];
 
                     const li = document.createElement("li");
-                    li.textContent = `Código: ${controlador.codigo}, Marca: ${controlador.marca}, Especificaciones: ${controlador.especificaciones}, Fecha de Fabricación: ${controlador.fecha_fabrica}, Detalles: ${controlador.detalles}`;
+                    li.textContent = `Código: ${controlador.codigo} | Marca: ${controlador.marca} | Especificaciones: ${controlador.especificaciones} | Fecha de Fabricación: ${controlador.fecha_fabrica} | Detalles: ${controlador.detalles}`;
 
                     const editarButton = document.createElement("button");
                     editarButton.textContent = "Editar";
@@ -107,7 +107,7 @@
                 }
 
                 datosIngresados.innerHTML = `<h2>Datos Ingresados</h2>`;
-                datosIngresados.appendChild(listaRegistro); // Agregar la lista a la sección de datos ingresados
+                datosIngresados.appendChild(listaRegistro);
             });
         }
 
@@ -157,7 +157,7 @@
         }
 
         window.eliminar = function (key) {
-            const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
+            const confirmacion = confirm("¿Desea eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'Falcon'), key));
                 listaRegistro.innerHTML = ""; // Limpiar la lista después de eliminar
