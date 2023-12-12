@@ -12,7 +12,7 @@
 <header>
     <div class="encabezado">
         <h1>Cheito Company</h1>
-        <p>Registro de Controladores</p>
+        <p>Encuentra tu controlador preferido</p>
         <nav class="menu">
             <a href="index.html">Pagina Principal</a>
             <a href="informacion.html">Información</a>
@@ -39,24 +39,11 @@
                 <input type="date" id="fecha_fabrica" required>
 
                 <label for="detalles">Detalles:</label>
-                <input type="text" id="detalles" required>
+                <input type="detalles" id="detalles" required>
 
                 <button type="button" onclick="guardar()">Guardar</button>
+                
             </form>
-
-            <table class="table-container">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Marca</th>
-                        <th>Especificaciones</th>
-                        <th>Fecha y Año de Fabricación</th>
-                        <th>Detalles</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-body"></tbody>
-            </table>
         </div>
 
         <div class="img-formulario">
@@ -68,16 +55,16 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, update, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-
+      
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAYYHfHIO3GjsNFLJ1DoNzqjWAr21ZoEVg",
-            authDomain: "proyecto-falcon25.firebaseapp.com",
-            databaseURL: "https://proyecto-falcon25-default-rtdb.firebaseio.com",
-            projectId: "proyecto-falcon25",
-            storageBucket: "proyecto-falcon25.appspot.com",
-            messagingSenderId: "897557394941",
-            appId: "1:897557394941:web:a995638cdfb6b7e1735594"
+        apiKey: "AIzaSyBvEPUyI1HffkQBfBUAtw8_sLnoK_HyU24",
+        authDomain: "my-project-8aef9.firebaseapp.com",
+        databaseURL: "https://my-project-8aef9-default-rtdb.firebaseio.com",
+        projectId: "my-project-8aef9",
+        storageBucket: "my-project-8aef9.appspot.com",
+        messagingSenderId: "202472136261",
+        appId: "1:202472136261:web:08ebcdb1c54edfb23c0d2c"
         };
 
         // Initialize Firebase
@@ -165,36 +152,6 @@
             if (confirmacion) {
                 remove(child(ref(database, 'controladoresDJ'), key));
                 actualizarLista(); // Actualizar la lista después de eliminar
-            }
-        };
-
-        onValue(ref(database, 'controladoresDJ'), (snapshot) => {
-            renderizarTabla(snapshot.val());
-        });
-
-        function renderizarTabla(controladores) {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.innerHTML = "";
-
-            for (const key in controladores) {
-                if (Object.hasOwnProperty.call(controladores, key)) {
-                    const controlador = controladores[key];
-
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${controlador.codigo}</td>
-                        <td>${controlador.marca}</td>
-                        <td>${controlador.especificaciones}</td>
-                        <td>${controlador.fecha_fabrica}</td>
-                        <td>${controlador.detalles}</td>
-                        <td>
-                            <button onclick="editar('${key}', ${JSON.stringify(controlador)})">Editar</button>
-                            <button onclick="eliminar('${key}')">Eliminar</button>
-                        </td>
-                    `;
-
-                    tablaBody.appendChild(fila);
-                }
             }
         }
 
