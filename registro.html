@@ -32,14 +32,14 @@
                 <label for="marca">Marca:</label>
                 <input type="text" id="marca" required>
 
-                <label for="telefono">Especificaciones:</label>
-                <input type="tel" id="especificaciones" required>
+                <label for="especificaciones">Especificaciones:</label>
+                <input type="text" id="especificaciones" required>
 
                 <label for="fecha_fabrica">Fecha y Año de Fabricación:</label>
                 <input type="date" id="fecha_fabrica" required>
 
                 <label for="detalles">Detalles:</label>
-                <input type="detalles" id="detalles" required>
+                <input type="text" id="detalles" required>
 
                 <button type="button" onclick="guardar()">Guardar</button>
                 
@@ -110,7 +110,7 @@
             const detalles = document.getElementById("detalles").value;
             
             push(
-                ref(database, 'controladoresDJ'),
+                ref(database, 'Falcon'),
                 {
                     codigo: codigo,
                     marca: marca,
@@ -126,7 +126,7 @@
             document.getElementById('fecha_fabrica').value = '';
             document.getElementById('detalles').value = '';
 
-            actualizarLista(); // Actualizar la lista después de guardar
+            actualizarLista();
         }
 
         window.editar = function (key, controlador) {
@@ -144,18 +144,17 @@
                 detalles: nuevosDetalles
             });
 
-            actualizarLista(); // Actualizar la lista después de editar
+            actualizarLista();
         }
 
         window.eliminar = function (key) {
             const confirmacion = confirm("¿Estás seguro de que deseas eliminar este registro?");
             if (confirmacion) {
                 remove(child(ref(database, 'controladoresDJ'), key));
-                actualizarLista(); // Actualizar la lista después de eliminar
+                actualizarLista(); 
             }
         }
 
-        // Actualizar la lista al cargar la página
         actualizarLista();
     </script>
 </body>
